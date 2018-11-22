@@ -1,0 +1,52 @@
+/.project
+# OS generated files #
+######################
+hostname
+ydbmigrate.lasterror
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+flags
+ 
+# Linux
+.*
+!.gitignore
+!.htaccess
+*~
+ 
+# Mac OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+.goutputstream*
+._*
+.Spotlight-V100
+.Trashes
+
+
+# Application files #
+#####################
+**/db.csv
+**/yeapf.php
+**/configure.md5
+**/logs
+**/lock
+**/deathLogs
+**/.sync
+**/.login
+**/.config
+**/.sse
+**/.develop
+**/.developSession
+**/.distribution
+yeapf.db.ini
+documentacao/assinatura-digital/
+bin/
+packages/
+obj/
+**/backup
+**/backup_forms
