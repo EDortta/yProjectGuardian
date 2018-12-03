@@ -52,6 +52,7 @@
           if (file_exists($definitionFile)) {
             $versionDef = @file_get_contents($definitionFile);
             if ($versionDef) {
+              $versionDef = unserialize($versionDef);
               $appName             = $versionDef['APP_NAME'];
               $ret['app_name']     = $appName;
               $ret['versionLabel'] = $versionDef[$appName."_VERSION_LABEL"];
