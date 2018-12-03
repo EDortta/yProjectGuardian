@@ -43,7 +43,7 @@
           'file' =>"prod-versions/$project.ver"
         );
 
-        if (file_exists("prod-versions/$project.ver")) {
+        if (file_exists($ret['file'])) {
           $ret['version'] = @file_get_contents("prod-versions/$project.ver");
 
           if (file_exists("prod-versions/$project.def")) {
