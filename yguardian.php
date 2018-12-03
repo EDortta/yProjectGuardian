@@ -39,7 +39,8 @@
     {
       case 'check':
         $ret = array(
-          'project'=>$project
+          'project'=>$project,
+          'file' =>"prod-versions/$project.ver"
         );
 
         if (file_exists("prod-versions/$project.ver")) {
