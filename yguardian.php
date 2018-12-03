@@ -43,10 +43,10 @@
         );
 
         if (file_exists("prod-versions/$project.ver")) {
-          $ret['version'] = @file_get_contents("../prod-versions/$project.ver");
+          $ret['version'] = @file_get_contents("prod-versions/$project.ver");
 
-          if (file_exists("../prod-versions/$project.def")) {
-            $versionDef = @file_get_contents("../prod-versions/$project.def");
+          if (file_exists("prod-versions/$project.def")) {
+            $versionDef = @file_get_contents("prod-versions/$project.def");
             if ($versionDef) {
               $appName             = $versionDef['APP_NAME'];
               $ret['app_name']     = $appName;
