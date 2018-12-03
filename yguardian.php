@@ -38,16 +38,18 @@
     switch($a)
     {
       case 'check':
+        $versionFile = "prod-versions/$project.ver";
+        $definitionFile = "prod-versions/$project.def";
         $ret = array(
           'project'=>$project,
-          'file' =>"prod-versions/$project.ver"
+          'file' =>$versionFile
         );
 
-        if (file_exists($ret['file'])) {
-          $ret['version'] = @file_get_contents("prod-versions/$project.ver");
+        if (file_exists($versionFile)) {
+          $ret['version'] = @file_get_contents($versionFile);
 
-          if (file_exists("prod-versions/$project.def")) {
-            $versionDef = @file_get_contents("prod-versions/$project.def");
+          if (file_exists($definitionFile)) {
+            $versionDef = @file_get_contents($definitionFile);
             if ($versionDef) {
               $appName             = $versionDef['APP_NAME'];
               $ret['app_name']     = $appName;
