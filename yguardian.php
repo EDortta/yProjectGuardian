@@ -1,35 +1,13 @@
 <?php
-/*      yguardian.php
- *
- *      slotEmptyImplementation.php
- *      This file is part of YeAPF
- *      (Yet Another PHP Framework)
- *      YeAPF 0.8.61-148 built on 2018-11-21 10:19 (0 DST)
- *      Copyright (C) 2004-2018 Esteban Daniel Dortta - dortta@yahoo.com
- *      2018-08-02 21:25:18 (0 DST)
- *
- *
- *      The MIT License (MIT)
- *
- *      Copyright (c) 2016-2018 Esteban D.Dortta
- *
- *      Permission is hereby granted, free of charge, to any person obtaining a copy
- *      of this software and associated documentation files (the "Software"), to deal
- *      in the Software without restriction, including without limitation the rights
- *      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *      copies of the Software, and to permit persons to whom the Software is
- *      furnished to do so, subject to the following conditions:
- *
- *      The above copyright notice and this permission notice shall be included in all
- *      copies or substantial portions of the Software.
- *
- *      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *      IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *      FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *      AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *      LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *      SOFTWARE.
+/*
+   yguardian.php
+   
+   .htaccess need to be as follows:
+      RewriteEngine on 
+      Options +FollowSymlinks
+      RewriteBase / 
+      RewriteRule ^check/([A-Za-z0-9\-\_]+)\/([A-Za-z0-9]+) rest.php?s=yguardian&a=check&project=$1&license=$2 
+
  */
 
 
@@ -168,49 +146,4 @@
     return em_yguardian($a, $values);
   }
 
-  /* tyguardian is the task event manager
-   * The tasks are created using YTaskManager() and called later to be fulfilled.
-   * It is called by task.php?s=yeapf&a=tick ou yeapf_ticker.php via cron as this:
-   *          wget http://example.com/task.php?s=yeapf&a=tick
-   *          OR
-   *          /usr/bin/php yeapf_ticker.php
-   */
-  function tyguardian($a)
-  {
-    global $sysDate, $ytasker, $xq_start;
-
-    /* publish the task context as local variables:
-       xq_start, xq_target, j_params */
-    extract($ytasker->getTaskContext());
-
-    /* grants xq_start is a positive integer value */
-    $xq_start=isset($xq_start)?intval($xq_start):0;
-
-    switch($a)
-    {
-      case 'exportTable':
-        /*  For example, let's say you need to export a big table called 'invoices'
-            When you create the task, you set j_params with 'startDate' and 'endDate'
-            All task functionallity depends on $ytasker->taskCanRun() so you need to
-            build a loop starting in xq_start and checking $ytasker->taskCanRun()
-
-            $sql="select * from invoices where dueDate>='$startDate' and dueDate<='$endDate' offset $xq_start";
-            $q=db_query($sql);
-            while (($ytasker->taskCanRun()) && ($d=db_fetch_array($q))) {
-              ...
-              $xq_start++;
-              $ytasker->advanceTo($xq_start);
-            }
-        */
-        break;
-
-      case 'buildList':
-        break;
-
-      case 'sendEmail':
-        break;
-    }
-
-
-  }
 ?>

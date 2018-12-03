@@ -1,0 +1,67 @@
+#!/bin/bash
+# (C) 2018 - Esteban D.Dortta
+# yuploader
+
+PREFIX=""
+CREDENTIAL=""
+curl=`which curl`
+
+if [ ! -z $curl ]; then
+
+  while getopts p:c:h option 
+  do 
+   case "${option}" 
+   in 
+     h) 
+        echo "  "
+        echo "$0"
+        echo "(C) 2018 Esteban D.Dortta"
+        echo "  Project uploader"
+        echo "  This script helps your project to be published"
+        echo "    -h shows this help"
+        echo "    -p indicates project prefix to be used when uploading"
+        echo "    -c credential hash"
+        echo "  "
+        exit 0
+        ;; 
+     p) 
+        PREFIX="${OPTARG}-"
+        ;;
+     c) 
+        CREDENTIAL=${OPTARG}
+        ;; 
+   esac 
+  done 
+
+  if [ -d ".distribution" ]; then
+    ver=`cat .distribution/version.inf | awk -F- '{ print $1 }'`
+    rev=`cat .distribution/version.inf`
+
+    regex='"APP_NAME";s:[0-9]:\"[A-Za-z0-9\_\-]+\"'
+    def=`cat .distribution/$ver/version.def`
+    if [[ $def =~ $regex ]]; then
+      strresult=${BASH_REMATCH[0]}
+      appname=`echo $strresult | awk -F: '{ print $3 }' | sed -e 's/^"//' -e 's/"$//'`
+    fi
+
+    echo "Uploading $PREFIX$appname $rev..."
+
+    curl \
+      -F "project_file=@downloads/$appname-$ver.zip" \
+      -F "project_def=@.distribution/$ver/version.def" \
+      -F "version=$rev"  \
+      -F "credential=$CREDENTIAL"  \
+      -F "project=$PREFIX$appname"  \
+      http://distro.inovacaosistemas.com.br/uploadProject.php
+    if [ $? = 0 ]; then
+      echo "Ready"
+    else
+      echo "Error $? uploading $PREFIX$appname"
+    fi
+  else
+    echo "This script need to be launched from a ydistbuilder project"
+    echo "It will search info in the '.distribution' folder and you dont't have one yet"
+  fi
+else
+  echo "This script requires 'curl' installed"
+fi

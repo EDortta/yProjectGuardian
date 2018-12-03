@@ -7,5 +7,7 @@ tasks.php
 yeapf.db.ini
 yeapf_ticker.php
 yguardian.php
+uploadProject.php
+tools/*
 includes/*
 lib/*

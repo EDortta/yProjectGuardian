@@ -1,0 +1,42 @@
+#!/bin/bash
+# (C) 2018 - Esteban D.Dortta
+# ychangeurl
+
+VALUE=''
+NAME=''
+
+while getopts n:v:h option; do 
+  case "${option}" 
+  in 
+    h) 
+      echo "  "
+      echo "$0"
+      echo "(C) 2018 Esteban D.Dortta"
+      echo "  Project uploader"
+      echo "  This script helps you to change url values"
+      echo "    -h shows this help"
+      echo "    -n variable name"
+      echo "    -v variable new value. if ommited, it will be treated as an integer and incremented by one"
+      echo "  "
+      exit 0
+      ;; 
+    v) 
+      VALUE="${OPTARG}"
+      ;;
+    n) 
+      NAME=${OPTARG}
+      ;; 
+  esac 
+done 
+
+if [ ! -z "$NAME" ]; then
+  current_value=`cat e_index.html | grep "[\?,\&]$NAME=[0-9]*"  | head -1 | awk -F"$NAME=" '{print $2}' | awk -F\" '{print $1}'`
+  echo "Current value: $current_value"
+  if [ -z "$VALUE" ]; then
+    VALUE=$((current_value+1))
+  fi
+  echo "New value: $VALUE"
+  sed -i -e "s#$NAME=$current_value#$NAME=$VALUE#g" e_index.html
+else
+  echo "use '$0' -h"
+fi

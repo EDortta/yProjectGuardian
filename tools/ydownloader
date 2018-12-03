@@ -1,0 +1,47 @@
+#!/bin/bash
+# (C) 2018 - Esteban D.Dortta
+# ydownloader
+# it uses the same config file that yprojectguardian uses
+# This script will:
+#   1) Check if there is an internet connection pinging 8.8.8.8
+#   2) Compares current version with remote one
+#   3) If differs (for up or down), downloads to 'backup' folder
+
+
+while getopts n:v:h option; do 
+  case "${option}" 
+  in 
+    h) 
+      echo "  "
+      echo "$0"
+      echo "(C) 2018 Esteban D.Dortta"
+      echo "  Project downloader"
+      echo "  This script helps you to keep your project distribution up-to-date"
+      echo "    -h shows this help"
+      echo "    -a after download, overwrite or create "
+      echo "    -v variable new value. if ommited, it will be treated as an integer and incremented by one"
+      echo "  "
+      exit 0
+      ;; 
+    v) 
+      VALUE="${OPTARG}"
+      ;;
+    n) 
+      NAME=${OPTARG}
+      ;; 
+  esac 
+done 
+
+
+
+if [ -f "yproject.ini" ]; then
+  collector=$(awk -F "=" '/collector/ {print $2}' yproject.ini | sed -e 's/^ *//' -e 's/ *$//')
+
+else
+  echo " "
+  echo "$0"
+  echo "(C) 2018 Esteban D.Dortta"
+  echo "This script will check current version of a local copy of a project against the public one."
+  echo "If it differs, it will download and overwrite the 'backup' folder"
+  echo "You need to have a 'yproject.ini' in the current folder"
+fi
