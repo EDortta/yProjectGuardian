@@ -2,7 +2,7 @@
 /*
    yguardian.php
    
-   .htaccess need to be as follows:
+   .htaccess need to be set as follows:
       RewriteEngine on 
       Options +FollowSymlinks
       RewriteBase / 
@@ -42,7 +42,7 @@
           'project'=>$project
         );
 
-        if (file_exists("../prod-versions/$project.ver")) {
+        if (file_exists("prod-versions/$project.ver")) {
           $ret['version'] = @file_get_contents("../prod-versions/$project.ver");
 
           if (file_exists("../prod-versions/$project.def")) {
