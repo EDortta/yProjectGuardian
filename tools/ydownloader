@@ -8,7 +8,10 @@
 #   3) If differs (for up or down), downloads to 'backup' folder
 
 
-while getopts n:v:h option; do 
+OVERWRITE=0
+CONFIG="yproject.ini"
+
+while getopts c:o:h option; do 
   case "${option}" 
   in 
     h) 
@@ -18,24 +21,43 @@ while getopts n:v:h option; do
       echo "  Project downloader"
       echo "  This script helps you to keep your project distribution up-to-date"
       echo "    -h shows this help"
-      echo "    -a after download, overwrite or create "
-      echo "    -v variable new value. if ommited, it will be treated as an integer and incremented by one"
+      echo "    -c config file (defaults to ./yproject.ini)"
+      echo "    -o after download, if overwrites or create application folder"
       echo "  "
       exit 0
       ;; 
-    v) 
-      VALUE="${OPTARG}"
+    o) 
+      OVERWRITE="1"
       ;;
-    n) 
-      NAME=${OPTARG}
-      ;; 
+    c) 
+      CONFIG="${OPTARG}"
+      ;;
   esac 
 done 
 
 
 
-if [ -f "yproject.ini" ]; then
-  collector=$(awk -F "=" '/collector/ {print $2}' yproject.ini | sed -e 's/^ *//' -e 's/ *$//')
+if [ -f "$CONFIG" ]; then
+  source=$(awk -F "=" '/source/ {print $2}' $CONFIG | sed -e 's/^ *//' -e 's/ *$//')
+  id=$(awk -F "=" '/id/ {print $2}' $CONFIG | sed -e 's/^ *//' -e 's/ *$//')
+  backup=$(awk -F "=" '/backup/ {print $2}' $CONFIG | sed -e 's/^ *//' -e 's/ *$//')
+  folder=$(awk -F "=" '/folder/ {print $2}' $CONFIG | sed -e 's/^ *//' -e 's/ *$//')
+  license=$(awk -F "=" '/license/ {print $2}' $CONFIG | sed -e 's/^ *//' -e 's/ *$//')
+
+  if [ ! -z "$backup" ]; then
+    if [ ! -d "$backup" ]; then
+      echo "Creating $backup..."
+      mkdir "$backup"
+    fi
+
+    if [ -d "$backup" ]; then 
+      url="$source/check/$id/$license";
+      wget -O "/tmp/$id.json" $url
+    else
+      echo "Folder '$backup' not found"
+      exit 1
+    fi
+  fi
 
 else
   echo " "
@@ -43,5 +65,7 @@ else
   echo "(C) 2018 Esteban D.Dortta"
   echo "This script will check current version of a local copy of a project against the public one."
   echo "If it differs, it will download and overwrite the 'backup' folder"
-  echo "You need to have a 'yproject.ini' in the current folder"
+  echo "* $CONFIG config file not found!"
+  echo "Use $0 -h to more help"
+  echo " "
 fi
