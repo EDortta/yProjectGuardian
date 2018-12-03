@@ -43,7 +43,7 @@
         $ret = array(
           'project'=>$project,
           'file' =>$versionFile,
-          'cwd' => cwd()
+          'cwd' => getcwd()
         );
 
         if (file_exists($versionFile)) {
