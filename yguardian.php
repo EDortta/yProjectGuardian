@@ -41,9 +41,13 @@
         $versionFile = "prod-versions/$project.ver";
         $definitionFile = "prod-versions/$project.def";
         $ret = array(
-          'project'=>$project,
-          'file' =>$versionFile,
-          'cwd' => getcwd()
+          'project'=>$project
+          /*  para depurar
+
+          , 'file' => $versionFile
+          , 'cwd'  => getcwd()
+
+          */
         );
 
         if (file_exists($versionFile)) {

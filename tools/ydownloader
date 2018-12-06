@@ -1,7 +1,7 @@
 #!/bin/bash
 # (C) 2018 - Esteban D.Dortta
 # ydownloader
-# it uses the same config file that yprojectguardian uses
+# It uses the same config file that yprojectguardian uses
 # This script will:
 #   1) Check if there is an internet connection pinging 8.8.8.8
 #   2) Compares current version with remote one
