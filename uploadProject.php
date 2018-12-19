@@ -6,9 +6,12 @@ if (!is_dir($target_dir))
 
 $project = $_POST['project'];
 if ($project>'') {
-  if (!is_dir("$target_dir/$project"))
-    mkdir("$target_dir/$project");
-  $target_file="$target_dir/$project/". basename($_FILES["project_file"]["name"]);
+  $project_folder=implode("/",explode("-",$project));
+
+  if (!is_dir("$target_dir/$project_folder"))
+    mkdir("$target_dir/$project_folder", 0777, true);
+
+  $target_file="$target_dir/$project_folder/". basename($_FILES["project_file"]["name"]);
 
   if (!is_dir("prod-versions"))
     mkdir("prod-versions");
@@ -27,11 +30,11 @@ if ($project>'') {
     } else  {
       print_r($_FILES);
       echo "ErrorProject copying ".$_FILES["project_file"]["tmp_name"]." to $target_file";
-    }      
+    }
   } else {
     echo "Error uploading project file";
   }
-} else 
+} else
   echo "NoProject";
 
 echo "\n";

@@ -8,11 +8,11 @@ curl=`which curl`
 
 if [ ! -z $curl ]; then
 
-  while getopts p:c:h option 
-  do 
-   case "${option}" 
-   in 
-     h) 
+  while getopts n:p:c:h option
+  do
+   case "${option}"
+   in
+     h)
         echo "  "
         echo "$0"
         echo "(C) 2018 Esteban D.Dortta"
@@ -20,28 +20,34 @@ if [ ! -z $curl ]; then
         echo "  This script helps your project to be published"
         echo "    -h shows this help"
         echo "    -p indicates project prefix to be used when uploading"
+        echo "    -n indicates project application name (if differs from version.def)"
         echo "    -c credential hash"
         echo "  "
         exit 0
-        ;; 
-     p) 
+        ;;
+     p)
         PREFIX="${OPTARG}-"
         ;;
-     c) 
+     n)
+        appname="${OPTARG}"
+        ;;
+     c)
         CREDENTIAL=${OPTARG}
-        ;; 
-   esac 
-  done 
+        ;;
+   esac
+  done
 
   if [ -d ".distribution" ]; then
     ver=`cat .distribution/version.inf | awk -F- '{ print $1 }'`
     rev=`cat .distribution/version.inf`
 
-    regex='"APP_NAME";s:[0-9]:\"[A-Za-z0-9\_\-]+\"'
-    def=`cat .distribution/$ver/version.def`
-    if [[ $def =~ $regex ]]; then
-      strresult=${BASH_REMATCH[0]}
-      appname=`echo $strresult | awk -F: '{ print $3 }' | sed -e 's/^"//' -e 's/"$//'`
+    if [ -z $appname ]; then
+      regex='"APP_NAME";s:[0-9]:\"[A-Za-z0-9\_\-]+\"'
+      def=`cat .distribution/$ver/version.def`
+      if [[ $def =~ $regex ]]; then
+        strresult=${BASH_REMATCH[0]}
+        appname=`echo $strresult | awk -F: '{ print $3 }' | sed -e 's/^"//' -e 's/"$//'`
+      fi
     fi
 
     echo "Uploading $PREFIX$appname $rev..."
