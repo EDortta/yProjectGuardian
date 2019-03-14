@@ -9,7 +9,7 @@ The idea is to keep all the slave servers up to date when an update has been rel
 ## How it works
 ![enter image description here](http://yeapf.com/images/mermaid-yProjectGuardian-how-it-works.svg?v=1)
 
-## TLDR;
+## TL;DR
 In case you want to go to the hot stuff, just jump to "putting the stuff to work" section.
 
 ### Definitions
